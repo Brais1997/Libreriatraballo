@@ -119,4 +119,15 @@ public class Acceso {
         }
 
     }
+        public static void actualizar(String columna, String valor, String primaryKey, String tab, String primaryKeyVal) throws Exception {
+        if (primaryKey.equals("null")) {
+            throw new Exception("Fila inválida");
+        }
+        try {
+            Statement s = conexion.createStatement();
+            s.executeUpdate("update " + tab + " set " + columna + "='" + valor + "' where " + primaryKey + "='" + primaryKeyVal + "';");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }
