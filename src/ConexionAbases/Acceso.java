@@ -92,4 +92,31 @@ public class Acceso {
 
         return rs;
     }
+    /**
+     * Elimina un registro de una tabla
+     *
+     * @param tab Nome da taboa que se quere eliminar o rexistro
+     * @param primaryKeyCol Nome da columna da clave primaria
+     * @param primaryKeyVal Valor da clave Primaria
+     * @throws java.sql.SQLException
+     */
+    public static void eliminar(String primaryKeyCol, String primaryKeyVal, String tab) throws Exception {
+        if (primaryKeyVal.equals("null")) {
+            throw new Exception("Fila vacía");
+        }
+        Statement s = null;
+        try {
+            s = conexion.createStatement();
+            s.executeUpdate("delete from " + tab + " where " + primaryKeyCol + "='" + primaryKeyVal + "';");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                s.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+
+    }
 }
