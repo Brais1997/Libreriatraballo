@@ -63,4 +63,14 @@ public class Acceso {
         s = conexion.createStatement();
         s.executeUpdate(consulta);
     }
+     /**
+     * Pecha o fluxo da base
+     */
+    public static void cerrarConexion() {
+        try {
+            conexion.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }
