@@ -41,4 +41,26 @@ public class Acceso {
         }
 
     }
+     /**
+     * Este metodo serve para insertar datos na base
+     *
+     * @param tab Nome da taboa a insertar
+     * @param valores Un array de valores para insertar na tabla
+     * @throws java.sql.SQLException
+     */
+    public static void insertar(String tab, String[] valores) throws SQLException {
+
+        String consulta = "insert into " + tab + " values(";
+        for (int i = 0; i < valores.length; i++) {
+            if (i < valores.length - 1) {
+                consulta += "'" + valores[i] + "',";
+            } else {
+                consulta += "'" + valores[i] + "'";
+            }
+        }
+        consulta += ");";
+
+        s = conexion.createStatement();
+        s.executeUpdate(consulta);
+    }
 }
