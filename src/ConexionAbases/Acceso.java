@@ -7,6 +7,7 @@ package ConexionAbases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -72,5 +73,23 @@ public class Acceso {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+    /**
+     * Devolve todo o que esta na base de datos
+     *
+     * @param tab Nome da taboa que se quere consultar
+  
+     */
+    public static ResultSet consultar(String tab) {
+        ResultSet rs = null;
+        Statement s = null;
+        try {
+            s = conexion.createStatement();
+            rs = s.executeQuery("select * from " + tab + ";");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return rs;
     }
 }
