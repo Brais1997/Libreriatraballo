@@ -10,16 +10,18 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JTable;
 
 /**
  *
  * @author balva
  */
 public class Acceso {
-      private static Connection conexion;
+
+    private static Connection conexion;
     private static Statement s;
     private static final String SERVER = "jdbc:mysql://";
-
+      private static  int nRegistros;
     /**
      * Conecta o programa ó servidor da base de datos
      *
@@ -29,7 +31,6 @@ public class Acceso {
      * @param PASSWORD Contraseña dO usuario
      * @return Se saiu ben a conexion ca base de datos
      */
-
     public static String conectar(String BD, String USER, String PASSWORD, String HOST) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -42,29 +43,31 @@ public class Acceso {
         }
 
     }
-     /**
+
+    /**
      * Este metodo serve para insertar datos na base
      *
      * @param tab Nome da taboa a insertar
      * @param valores Un array de valores para insertar na tabla
      * @throws java.sql.SQLException
      */
-    public static void insertar(String tab, String[] valores) throws SQLException {
-
-        String consulta = "insert into " + tab + " values(";
-        for (int i = 0; i < valores.length; i++) {
-            if (i < valores.length - 1) {
-                consulta += "'" + valores[i] + "',";
-            } else {
-                consulta += "'" + valores[i] + "'";
+  public static void insertar(String nome, String artista, String direccion, String duracion) {
+        Statement x = null;
+        try {
+            x = conexion.createStatement();
+          x.executeUpdate("insert into reproductor values('"+ nome + "','" + artista+ "','" + direccion + "','" + duracion + "');");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                x.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
             }
         }
-        consulta += ");";
-
-        s = conexion.createStatement();
-        s.executeUpdate(consulta);
     }
-     /**
+
+    /**
      * Pecha o fluxo da base
      */
     public static void cerrarConexion() {
@@ -74,11 +77,12 @@ public class Acceso {
             System.out.println(ex.getMessage());
         }
     }
+
     /**
      * Devolve todo o que esta na base de datos
      *
      * @param tab Nome da taboa que se quere consultar
-  
+     *
      */
     public static ResultSet consultar(String tab) {
         ResultSet rs = null;
@@ -92,6 +96,7 @@ public class Acceso {
 
         return rs;
     }
+
     /**
      * Elimina un registro de una tabla
      *
@@ -119,7 +124,8 @@ public class Acceso {
         }
 
     }
-        public static void actualizar(String columna, String valor, String primaryKey, String tab, String primaryKeyVal) throws Exception {
+
+    public static void actualizar(String columna, String valor, String primaryKey, String tab, String primaryKeyVal) throws Exception {
         if (primaryKey.equals("null")) {
             throw new Exception("Fila inválida");
         }
@@ -130,4 +136,19 @@ public class Acceso {
             System.out.println(ex.getMessage());
         }
     }
+
+    /*public static int contar () {
+        try{
+           
+      ResultSet rs= null;
+              
+    rs  = s.executeQuery("SELECT count(*) from reproductor");
+    nRegistros  = Integer.parseInt(rs.getString("total"));
+    
+  
+    } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+          return nRegistros;
+}*/
 }
